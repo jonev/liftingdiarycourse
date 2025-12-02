@@ -5,7 +5,8 @@ import { getWorkoutsByDate } from '@/data/workouts';
 import { DatePicker } from './date-picker';
 import { formatDate } from '@/lib/date-utils';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Clock, Pencil } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Clock, Pencil, Plus } from 'lucide-react';
 
 interface DashboardPageProps {
   searchParams: Promise<{ date?: string }>;
@@ -61,7 +62,15 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
         {/* Date Picker - Small Client Component */}
         <Card>
           <CardHeader>
-            <CardTitle>Select Date</CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle>Select Date</CardTitle>
+              <Button asChild size="sm">
+                <Link href="/dashboard/workout/new">
+                  <Plus className="h-4 w-4" />
+                  Create Workout
+                </Link>
+              </Button>
+            </div>
           </CardHeader>
           <CardContent>
             <DatePicker selectedDate={selectedDate} />
