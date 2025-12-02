@@ -77,3 +77,28 @@ export async function getWorkoutsByDate(
     })),
   }));
 }
+
+/**
+ * Creates a new workout for a user.
+ * CRITICAL: Always include userId to ensure data isolation.
+ */
+export async function createWorkoutHelper(data: {
+  name: string;
+  date: Date;
+  durationMinutes?: number;
+  userId: string;
+}) {
+  const [workout] = await db
+    .insert(workouts)
+    .values({
+      name: data.name,
+      date: data.date,
+      durationMinutes: data.durationMinutes || null,
+      userId: data.userId,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    })
+    .returning();
+
+  return workout;
+}
