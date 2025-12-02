@@ -7,6 +7,9 @@ import { formatDate } from '@/lib/date-utils';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Clock, Pencil, Plus } from 'lucide-react';
+import { getWeightUnitPreference } from '@/lib/weight-preference';
+import { convertWeight } from '@/lib/weight-utils';
+import { UnitSelector } from './unit-selector';
 
 interface DashboardPageProps {
   searchParams: Promise<{ date?: string }>;
@@ -20,7 +23,10 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
     redirect('/');
   }
 
-  // 2. Get date from URL search params or default to today
+  // 2. Get user's weight unit preference
+  const unit = await getWeightUnitPreference();
+
+  // 3. Get date from URL search params or default to today
   const params = await searchParams;
   const dateParam = params.date;
 
@@ -51,12 +57,15 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
   return (
     <div className="min-h-screen bg-background p-8">
       <div className="mx-auto max-w-6xl space-y-6">
-        {/* Header with Dashboard title and Date Picker */}
+        {/* Header with Dashboard title, Date Picker, and Unit Selector */}
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <div className="flex flex-col gap-2 min-w-[300px]">
-            <span className="text-sm font-medium">Select date</span>
-            <DatePicker selectedDate={selectedDate} />
+          <div className="flex items-center gap-4">
+            <div className="flex flex-col gap-2 min-w-[300px]">
+              <span className="text-sm font-medium">Select date</span>
+              <DatePicker selectedDate={selectedDate} />
+            </div>
+            <UnitSelector initialUnit={unit} />
           </div>
         </div>
 
@@ -143,7 +152,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
                                       Reps
                                     </th>
                                     <th className="text-left py-2 px-3 font-medium text-muted-foreground">
-                                      Weight (lbs)
+                                      Weight ({unit})
                                     </th>
                                   </tr>
                                 </thead>
@@ -153,7 +162,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
                                       <td className="py-2 px-3">{set.setNumber}</td>
                                       <td className="py-2 px-3 font-medium">{set.reps}</td>
                                       <td className="py-2 px-3 font-medium">
-                                        {parseFloat(set.weight).toFixed(1)}
+                                        {convertWeight(set.weight, 'lbs', unit).toFixed(1)}
                                       </td>
                                     </tr>
                                   ))}
