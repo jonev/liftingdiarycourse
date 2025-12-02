@@ -1,10 +1,11 @@
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
+import Link from 'next/link';
 import { getWorkoutsByDate } from '@/data/workouts';
 import { DatePicker } from './date-picker';
 import { formatDate } from '@/lib/date-utils';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Clock } from 'lucide-react';
+import { Clock, Pencil } from 'lucide-react';
 
 interface DashboardPageProps {
   searchParams: Promise<{ date?: string }>;
@@ -106,6 +107,13 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
                           )}
                         </div>
                       </div>
+                      <Link
+                        href={`/dashboard/workout/${workout.id}`}
+                        className="rounded-md p-2 hover:bg-muted transition-colors"
+                        aria-label="Edit workout"
+                      >
+                        <Pencil className="h-5 w-5 text-muted-foreground hover:text-foreground" />
+                      </Link>
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-6">
