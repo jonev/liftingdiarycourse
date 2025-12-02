@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Link from "next/link";
 import {
   ClerkProvider,
   SignInButton,
@@ -38,8 +39,15 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <header className="p-4 flex justify-between items-center border-b">
-            <div className="text-lg font-semibold">Lifting Diary</div>
+            <Link href="/" className="text-lg font-semibold hover:text-primary transition-colors">
+              Lifting Diary
+            </Link>
             <div className="flex gap-4 items-center">
+              <SignedIn>
+                <Link href="/dashboard">
+                  <Button variant="outline">Dashboard</Button>
+                </Link>
+              </SignedIn>
               <SignedOut>
                 <SignInButton mode="modal">
                   <Button variant="outline">Sign In</Button>

@@ -6,6 +6,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a Next.js 16 application called "liftingdiarycourse" built with the App Router, React 19, TypeScript, and Tailwind CSS 4. The project uses the newer Tailwind CSS PostCSS integration and Clerk for authentication.
 
+## 🚨 CRITICAL: Documentation-First Development
+
+**BEFORE generating ANY code, ALWAYS refer to the relevant documentation files in the `/docs` directory.**
+
+The `/docs` directory contains authoritative reference documentation for all technologies, libraries, and frameworks used in this project. When implementing features or making changes:
+
+1. **First**: Check if relevant documentation exists in `/docs` for the technology/library you're working with
+2. **Read**: Review the documentation file thoroughly to understand current best practices and patterns
+3. **Apply**: Generate code that strictly follows the patterns and guidelines from the documentation
+4. **Never**: Generate code based on outdated patterns or general knowledge without consulting project docs first
+
+This ensures all generated code uses up-to-date, project-approved patterns and prevents the introduction of deprecated or incorrect implementations.
+
+- docs/ui.md
+
 ## Development Commands
 
 ### Start Development Server
