@@ -1,6 +1,3 @@
-'use server';
-
-import { auth } from '@clerk/nextjs/server';
 import { db } from '@/db';
 import { workouts, workoutExercises, exercises, sets } from '@/db/schema';
 import { eq, and, gte, lt, desc } from 'drizzle-orm';
@@ -24,13 +21,14 @@ export interface WorkoutWithDetails {
   }[];
 }
 
-export async function getWorkoutsByDate(date: Date): Promise<WorkoutWithDetails[]> {
-  const { userId } = await auth();
-
-  if (!userId) {
-    throw new Error('Unauthorized');
-  }
-
+/**
+ * Fetches all workouts for a specific user on a given date.
+ * CRITICAL: Always filters by userId to ensure data isolation.
+ */
+export async function getWorkoutsByDate(
+  userId: string,
+  date: Date
+): Promise<WorkoutWithDetails[]> {
   // Get start and end of the selected date
   const startOfDay = new Date(date);
   startOfDay.setHours(0, 0, 0, 0);
@@ -38,7 +36,7 @@ export async function getWorkoutsByDate(date: Date): Promise<WorkoutWithDetails[
   const endOfDay = new Date(date);
   endOfDay.setHours(23, 59, 59, 999);
 
-  // Fetch workouts with all related data
+  // CRITICAL: Always filter by userId to ensure user data isolation
   const workoutData = await db.query.workouts.findMany({
     where: and(
       eq(workouts.userId, userId),

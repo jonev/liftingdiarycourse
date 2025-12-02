@@ -19,7 +19,11 @@ The `/docs` directory contains authoritative reference documentation for all tec
 
 This ensures all generated code uses up-to-date, project-approved patterns and prevents the introduction of deprecated or incorrect implementations.
 
-- docs/ui.md
+- /docs/ui.md
+- /docs/data-fetching.md
+- /docs/auth.md
+- /docs/data-mutations.md
+- /docs/routing.md
 
 ## Development Commands
 
