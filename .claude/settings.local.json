@@ -6,7 +6,9 @@
       "mcp__neon__get_database_tables",
       "mcp__neon__describe_table_schema",
       "Bash(npx shadcn@latest add:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(find:*)",
+      "Bash(tree:*)"
     ],
     "deny": [],
     "ask": []

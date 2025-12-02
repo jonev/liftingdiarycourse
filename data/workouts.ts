@@ -79,6 +79,20 @@ export async function getWorkoutsByDate(
 }
 
 /**
+ * Fetches a single workout by ID for a specific user.
+ * CRITICAL: Always filters by userId to ensure data isolation.
+ */
+export async function getWorkoutById(workoutId: number, userId: string) {
+  const result = await db
+    .select()
+    .from(workouts)
+    .where(and(eq(workouts.id, workoutId), eq(workouts.userId, userId)))
+    .limit(1);
+
+  return result[0] ?? null;
+}
+
+/**
  * Creates a new workout for a user.
  * CRITICAL: Always include userId to ensure data isolation.
  */
@@ -101,4 +115,31 @@ export async function createWorkoutHelper(data: {
     .returning();
 
   return workout;
+}
+
+/**
+ * Updates an existing workout for a user.
+ * CRITICAL: Always verify ownership with userId to ensure data isolation.
+ */
+export async function updateWorkoutHelper(
+  workoutId: number,
+  userId: string,
+  data: {
+    name: string;
+    date: Date;
+    durationMinutes?: number;
+  }
+) {
+  const [workout] = await db
+    .update(workouts)
+    .set({
+      name: data.name,
+      date: data.date,
+      durationMinutes: data.durationMinutes || null,
+      updatedAt: new Date(),
+    })
+    .where(and(eq(workouts.id, workoutId), eq(workouts.userId, userId)))
+    .returning();
+
+  return workout ?? null;
 }
